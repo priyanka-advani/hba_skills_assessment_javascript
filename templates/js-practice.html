@@ -252,20 +252,46 @@
 <script>
   "use strict";
 
-    var PRIME_COLORS = ['orange', 'midnightblue', 'darkgoldenrod', 'green', 'purple'];
+  var PRIME_COLORS = ['orange', 'midnightblue', 'darkgoldenrod', 'green', 'purple'];
 
+// how to find prime numbers using a sieve: http://brianhan.tumblr.com/post/46454945029
+// Bitwise shifting any number x to the left by y bits yields x * 2^y (always a multiple)
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators
+  function primeNumbers(n) {
     var primeNumbers = [];
+    var sieve = [];
+    var i, j;
 
-    function primeNumbers(n) {
-      for (var i = 0; i <= n; i++) {
-        if (i === 2) {
-          primeNumbers.push(i);
+    for (i = 2; i <= n; i++) {
+      for (j = i << 1; j <= n; j += i) {
+          sieve.push(j);
         }
-        else if (i > 2) && (i %)
+      if (sieve.indexOf(i) === -1) {
+        primeNumbers.push(i);
       }
     }
+    return primeNumbers
+  }
 
-  // put the rest of your code here
+  function makePrimeCircles(primeNumberArray) {
+    for (var i = 0; i < primeNumberArray.length; i++) {
+      
+      var number = primeNumberArray[i];
+      var bgColor = "background-color: " + PRIME_COLORS[i];
+      var newPrimeCircle = document.createElement("div");
+      
+      newPrimeCircle.className="prime-circle";
+      newPrimeCircle.style=bgColor;
+      newPrimeCircle.innerText=number;
+      
+      $("#prime-circle-area").append(newPrimeCircle);
+    }
+  }
+
+  $("#make-prime-circles").on("click", (function() {
+    var primesToTwelve = primeNumbers(12);
+    makePrimeCircles(primesToTwelve);
+  }));
 </script>
 
 
@@ -312,8 +338,17 @@
     $("#puppies-go-here").append(puppyPhoto);
   }
 
-  // put your code here
+  function getPuppies(evt) {
+    evt.preventDefault();
 
+    var formInput = {
+      "num-puppies": $("#num-puppies").val(),
+    };
+
+    $.get("/puppies.json", formInput, showPuppies);
+  }
+  
+  $("#puppy-form").on("submit", getPuppies);
 </script>
 
 <div class="hint">

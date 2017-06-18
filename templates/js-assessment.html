@@ -219,7 +219,8 @@
 <script>
   "use strict";
   var numberGuessingMsg = $("#number-guessing-msg");
-  var secretNumber = Math.floor((Math.random() * 100) + 1);
+  var secretNumber
+  // = Math.floor((Math.random() * 100) + 1);
   // need to change to re-select after play button is re-enabled
 
   function guessingGame(evt) {
@@ -248,12 +249,15 @@
     $("#number-guessed").prop("disabled", false);
     $("#try-this-number").prop("disabled", false);
 
-    numberGuessingMsg.html("Guess a number between 1 and 100");
+    secretNumber = Math.floor((Math.random() * 100) + 1);
 
-    $("#guessing-game-form").on("submit", guessingGame);
+    $("#number-guessed").val("");
+
+    numberGuessingMsg.html("Guess a number between 1 and 100");
   }
   
   $("#play-guessing-game").on("click", playGame);
+  $("#guessing-game-form").on("submit", guessingGame);
 </script>
 
 
